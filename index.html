@@ -7,38 +7,39 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { background-color: #0f172a; color: #f8fafc; }
-        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-        .radar-container { position: relative; height: 250px; width: 250px; }
+        body { background-color: #0f172a; color: #f8fafc; font-family: 'Inter', system-ui, sans-serif; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease; }
+        .glass:hover { border-color: rgba(56, 189, 248, 0.4); transform: translateY(-4px); }
+        .chart-box { position: relative; height: 240px; width: 240px; margin: 0 auto; }
     </style>
 </head>
 <body class="p-4 md:p-8">
     <div class="max-w-6xl mx-auto">
-        <header class="flex justify-between items-center mb-8">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
             <div>
-                <h1 class="text-3xl font-bold text-sky-400">OpenStock AI</h1>
-                <p class="text-slate-400">量化選股分析報告 | 市場狀態: <span class="text-green-400">Bullish</span></p>
+                <h1 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500">OpenStock AI</h1>
+                <p class="text-slate-400 mt-2 text-lg">量化選股分析報告 | 市場狀態: <span class="text-green-400 font-bold">Bullish</span></p>
             </div>
-            <div class="text-right">
-                <p class="text-xs text-slate-500 uppercase">Last Update</p>
-                <p class="text-sm font-mono">2026-05-03 00:16</p>
+            <div class="bg-slate-800/50 px-4 py-2 rounded-lg border border-slate-700 text-right">
+                <p class="text-xs text-slate-500 uppercase font-bold">Last Update</p>
+                <p class="text-sm font-mono text-slate-300">2026-05-03 00:27</p>
             </div>
         </header>
-        <div id="stock-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        <div id="stock-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
     </div>
     <script>
-        const stocks = [{"id": "2330", "name": "台積電", "total_score": 64.0, "scores": {"fundamental": 0, "technical": 100, "chip": 100, "ai": 70}, "ai_insight": "台積電(2330)股價近期上漲趨勢持續，且資金流入強勁，短期可能繼續上漲。中長期看，台積電的半導體需求仍然是主要收入來源，且大型客戶訂單未見下降跡象，因此投資機會相對穩定。但是，全球經濟變化和競爭加劇也需要注意。", "reasons": ["基本面需關注", "技術趨勢強勢", "籌碼面強力買入"], "risk": "Low"}, {"id": "2454", "name": "聯發科", "total_score": 44.0, "scores": {"fundamental": 100, "technical": 0, "chip": 0, "ai": 70}, "ai_insight": "聯發科（2454）：目前處於高成長階段，5G 和 AI 等新技術的需求推動了旗下晶片銷量的上漲。然而，整體市場仍需要時間適應 5G 的發展，聯發科需要繼續推出具有競爭力的產品以維持領先地位。", "reasons": ["基本面極其強勁", "技術面疲弱", "籌碼面流出"], "risk": "Medium"}, {"id": "2317", "name": "鴻海", "total_score": 54.0, "scores": {"fundamental": 50, "technical": 0, "chip": 100, "ai": 70}, "ai_insight": "鴻海(2317)：短期下跌趨勢，MACD穿越 Signal線，短期止損於22.5元；中長期看好，獲利波動率增加，資產配置優惠，目標價格25.5元。", "reasons": ["基本面尚可", "技術面疲弱", "籌碼面強力買入"], "risk": "Medium"}, {"id": "2388", "name": "富邦金", "total_score": 29.0, "scores": {"fundamental": 50, "technical": 0, "chip": 0, "ai": 70}, "ai_insight": "富邦金（2388）現階段的表現較為疲弱，指數MA50和MA200均在下挫區域。但是，MACD顯示著一個逆轉信號，可能是股價將要反彈的警告。投資者可以考慮在價位附近低點進場，並鎖定中短期的回報機會。", "reasons": ["基本面尚可", "技術面疲弱", "籌碼面流出"], "risk": "Medium"}, {"id": "2881", "name": "台中商業銀行", "total_score": 29.0, "scores": {"fundamental": 50, "technical": 0, "chip": 0, "ai": 70}, "ai_insight": "「台中商業銀行(2881)」近期獲利率高於同業平均，且資產質量優秀。短期看來，股票價格可能維持平衡或輕微上漲，但長期投資者應注意競爭激烈的金融市場環境和非 Performing Loans 的風險。", "reasons": ["基本面尚可", "技術面疲弱", "籌碼面流出"], "risk": "Medium"}];
+        const stocks = [{"id": "2330", "name": "台積電", "total_score": 73.2, "scores": {"fundamental": 63, "technical": 50, "chip": 96, "ai": 89}, "ai_insight": "台積電(2330)的現金流續增，營收增長率維持高位，庫存減少帶來的供應側風險降低。短期看，估計在$110-120之間，中期看，可能會繼續創新高點。", "reasons": ["基本面尚可", "技術面盤整", "籌碼面強力買入"], "risk": "Low"}, {"id": "2454", "name": "聯發科", "total_score": 63.6, "scores": {"fundamental": 77, "technical": 49, "chip": 45, "ai": 85}, "ai_insight": "聯發科(2454)：目前的EPS估值為25倍，較高於同業平均8.5倍，但經驗證過的運營能力和長期成長潛力仍維持。近期股價回調可能是反應季節性需求增加的預期，投資者可考慮買入以獲取下一波成長機會。", "reasons": ["基本面極其強勁", "技術面盤整", "籌碼面分歧"], "risk": "Low"}, {"id": "2317", "name": "鴻海", "total_score": 36.3, "scores": {"fundamental": 38, "technical": 50, "chip": 0, "ai": 62}, "ai_insight": "鴻海2317)：\n\n* 近期獲利率下滑，但資產報酬率仍維持高位。\n* 股票價格回暖，可能是因為業績回暖的預期。\n* 估值較低，入市風險相對較小。\n\n投資洞察：鴻海2317) 的股票價格具有一定的波動性，但總體上仍具有投資.value。", "reasons": ["基本面需關注", "技術面盤整", "籌碼面流出"], "risk": "Medium"}, {"id": "2388", "name": "富邦金", "total_score": 40.75, "scores": {"fundamental": 41, "technical": 51, "chip": 14, "ai": 61}, "ai_insight": "富邦金（2388）的投資洞察如下：\n\n「富邦金近期獲利能力逐漸攀升，預計2023年將繼續維持高獲利成長。同時，公司的資產質量也相對穩定，支持股價上漲。投資建議：中長線投資，目標價位為128元以上。」", "reasons": ["基本面尚可", "技術面盤整", "籌碼面流出"], "risk": "Medium"}, {"id": "2881", "name": "台中商業銀行", "total_score": 42.65, "scores": {"fundamental": 47, "technical": 51, "chip": 0, "ai": 79}, "ai_insight": "「台中商業銀行」盈餘可持續性好，貸款成長穩定，資產質量優秀。但是，貸款風險高、利息率下調可能影響獲利，需要監控。", "reasons": ["基本面尚可", "技術面盤整", "籌碼面流出"], "risk": "Medium"}];
         
         function renderCards() {
             const container = document.getElementById('stock-cards');
             if (!stocks || stocks.length === 0) {
-                container.innerHTML = '<p class="text-center col-span-full text-slate-500">目前無分析數據，請重新執行掃描。</p>';
+                container.innerHTML = '<div class="col-span-full text-center py-20"><p class="text-slate-500 text-xl">目前無符合條件的分析數據</p></div>';
                 return;
             }
             
             stocks.forEach(stock => {
                 const card = document.createElement('div');
-                card.className = 'glass p-6 rounded-2xl shadow-xl';
+                card.className = 'glass p-6 rounded-3xl shadow-2xl flex flex-col';
                 
                 const name = stock.name || '未知個股';
                 const sid = stock.id || 'N/A';
@@ -48,30 +49,28 @@
                 const insight = stock.ai_insight || 'AI 分析暫時不可用';
                 
                 card.innerHTML = `
-                    <div class="flex justify-between items-start mb-4">
+                    <div class="flex justify-between items-start mb-6">
                         <div>
-                            <h2 class="text-xl font-bold text-white">${name} <span class="text-sm font-normal text-slate-400">(${sid})</span></h2>
-                            <div class="text-3xl font-black text-sky-400 mt-1">${score} <span class="text-sm font-normal text-slate-500">/ 100</span></div>
+                            <h2 class="text-2xl font-bold text-white">${name} <span class="text-sm font-normal text-slate-400">(${sid})</span></h2>
+                            <div class="text-4xl font-black text-sky-400 mt-2">${score} <span class="text-sm font-normal text-slate-500">/ 100</span></div>
                         </div>
-                        <span class="px-3 py-1 rounded-full text-xs font-bold ${risk === 'Low' ? 'bg-green-900 text-green-400' : 'bg-yellow-900 text-yellow-400'}">
-                            Risk: ${risk}
+                        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${risk === 'Low' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400'}">
+                            ${risk} Risk
                         </span>
                     </div>
-                    <div class="flex justify-center mb-6">
-                        <div class="radar-container">
-                            <canvas id="chart-${sid}"></canvas>
-                        </div>
+                    <div class="chart-box mb-8">
+                        <canvas id="chart-${sid}"></canvas>
                     </div>
-                    <div class="space-y-4">
+                    <div class="space-y-6 mt-auto">
                         <div>
-                            <p class="text-xs text-slate-500 uppercase mb-1">推薦理由</p>
-                            <ul class="text-sm text-slate-300 space-y-1">
-                                ${reasons.map(r => `<li>✅ ${r}</li>`).join('')}
+                            <p class="text-xs text-slate-500 uppercase font-bold mb-2 tracking-widest">推薦理由</p>
+                            <ul class="text-sm text-slate-300 space-y-2">
+                                ${reasons.map(r => `<li class="flex items-start"><span class="text-sky-400 mr-2">✦</span> ${r}</li>`).join('')}
                             </ul>
                         </div>
-                        <div class="p-3 bg-slate-800 rounded-lg border-l-4 border-sky-500">
+                        <div class="p-4 bg-slate-900/50 rounded-2xl border-l-4 border-sky-500">
                             <p class="text-xs text-sky-400 uppercase font-bold mb-1">🤖 AI 深度洞察</p>
-                            <p class="text-sm text-slate-300 italic">${insight}</p>
+                            <p class="text-sm text-slate-300 leading-relaxed italic">"${insight}"</p>
                         </div>
                     </div>
                 `;
@@ -85,6 +84,8 @@
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
             const s = stock.scores || {};
+            
+            // ABSOLUTE mapping to prevent misalignment
             const data = [
                 s.fundamental || 0,
                 s.technical || 0,
@@ -99,27 +100,34 @@
                     datasets: [{
                         label: 'Score',
                         data: data,
-                        backgroundColor: 'rgba(56, 189, 248, 0.3)',
+                        backgroundColor: 'rgba(56, 189, 248, 0.4)',
                         borderColor: 'rgba(56, 189, 248, 1)',
-                        borderWidth: 3,
+                        borderWidth: 4,
                         pointBackgroundColor: 'rgba(56, 189, 248, 1)',
                         pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgba(56, 189, 248, 1)'
+                        pointRadius: 4,
+                        pointHoverRadius: 6
                     }]
                 },
                 options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
                         r: {
                             angleLines: { color: 'rgba(255,255,255,0.1)' },
                             grid: { color: 'rgba(255,255,255,0.1)' },
-                            pointLabels: { color: '#94a3b8', font: { size: 12, weight: 'bold' } },
+                            pointLabels: { 
+                                color: '#94a3b8', 
+                                font: { size: 12, weight: 'bold', family: 'Inter' } 
+                            },
                             ticks: { display: false },
                             suggestedMin: 0,
                             suggestedMax: 100
                         }
                     },
-                    plugins: { legend: { display: false } }
+                    plugins: { 
+                        legend: { display: false }
+                    }
                 }
             });
         }
