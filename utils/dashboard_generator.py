@@ -52,7 +52,7 @@ class DashboardGenerator:
                 card.className = 'glass p-6 rounded-3xl shadow-2xl flex flex-col';
                 
                 const name = stock.name || '未知個股';
-                const sid = stock.id || 'N/A';
+                const sid = stock.id || 'NA';
                 const score = stock.total_score || 0;
                 const risk = stock.risk || 'Medium';
                 const reasons = stock.reasons || ['無具體理由'];
@@ -69,7 +69,7 @@ class DashboardGenerator:
                         </span>
                     </div>
                     <div class="chart-box mb-8">
-                        <canvas id="chart-${sid}"></canvas>
+                        <canvas id="stock-chart-${sid}"></canvas>
                     </div>
                     <div class="space-y-6 mt-auto">
                         <div>
@@ -90,56 +90,62 @@ class DashboardGenerator:
         }
 
         function renderChart(stock) {
-            const canvas = document.getElementById('chart-' + stock.id);
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            const s = stock.scores || {};
-            
-            // ABSOLUTE mapping to prevent misalignment
-            const data = [
-                s.fundamental || 0,
-                s.technical || 0,
-                s.chip || 0,
-                s.ai || 0
-            ];
-            
-            new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: ['基本面', '技術面', '籌碼面', '消息面'],
-                    datasets: [{
-                        label: 'Score',
-                        data: data,
-                        backgroundColor: 'rgba(56, 189, 248, 0.4)',
-                        borderColor: 'rgba(56, 189, 248, 1)',
-                        borderWidth: 4,
-                        pointBackgroundColor: 'rgba(56, 189, 248, 1)',
-                        pointBorderColor: '#fff',
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        r: {
-                            angleLines: { color: 'rgba(255,255,255,0.1)' },
-                            grid: { color: 'rgba(255,255,255,0.1)' },
-                            pointLabels: { 
-                                color: '#94a3b8', 
-                                font: { size: 12, weight: 'bold', family: 'Inter' } 
-                            },
-                            ticks: { display: false },
-                            suggestedMin: 0,
-                            suggestedMax: 100
-                        }
+            try {
+                const canvas = document.getElementById('stock-chart-' + stock.id);
+                if (!canvas) throw new Error('Canvas not found');
+                
+                const ctx = canvas.getContext('2d');
+                const s = stock.scores || {};
+                
+                // FORCE NUMERIC conversion and fallback to 0
+                const data = [
+                    Number(s.fundamental) || 0,
+                    Number(s.technical) || 0,
+                    Number(s.chip) || 0,
+                    Number(s.ai) || 0
+                ];
+                
+                new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['基本面', '技術面', '籌碼面', '消息面'],
+                        datasets: [{
+                            label: 'Score',
+                            data: data,
+                            backgroundColor: 'rgba(56, 189, 248, 0.4)',
+                            borderColor: 'rgba(56, 189, 248, 1)',
+                            borderWidth: 4,
+                            pointBackgroundColor: 'rgba(56, 189, 248, 1)',
+                            pointBorderColor: '#fff',
+                            pointRadius: 4
+                        }]
                     },
-                    plugins: { 
-                        legend: { display: false }
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                angleLines: { color: 'rgba(255,255,255,0.1)' },
+                                grid: { color: 'rgba(255,255,255,0.1)' },
+                                pointLabels: { 
+                                    color: '#94a3b8', 
+                                    font: { size: 12, weight: 'bold' } 
+                                },
+                                ticks: { display: false },
+                                suggestedMin: 0,
+                                suggestedMax: 100
+                            }
+                        },
+                        plugins: { legend: { display: false } }
                     }
+                });
+            } catch (e) {
+                console.error('Chart Error for stock ' + stock.id, e);
+                const container = document.getElementById('stock-chart-' + stock.id);
+                if (container) {
+                    container.innerHTML = '<div class="flex items-center justify-center h-full text-red-400 text-xs">圖表數據解析錯誤</div>';
                 }
-            });
+            }
         }
         window.onload = renderCards;
     </script>
@@ -158,9 +164,9 @@ class DashboardGenerator:
         try:
             repo = Repo(".")
             repo.git.add("index.html")
-            repo.index.commit("Visual Fix: Absolute Aspect Ratio and Data Alignment")
+            repo.index.commit("Bulletproof JS: Type casting and Try-Catch")
             origin = repo.remote(name="origin")
             origin.push(refspec="main:main", force=True)
-            print("🚀 Deployed Visual Fix to GitHub Pages!")
+            print("🚀 Deployed Bulletproof JS to GitHub Pages!")
         except Exception as e:
             print(f"❌ Deploy failed: {e}")
