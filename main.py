@@ -10,6 +10,7 @@ from core.chip_analyzer import ChipAnalyzer
 from core.fundamental_analyzer import FundamentalAnalyzer
 from core.news_analyzer_pro import NewsAnalyzerPro
 from utils.dashboard_generator import DashboardGenerator
+from utils.notifier import Notifier
 
 load_dotenv()
 FINMIND_TOKEN = os.getenv("FINMIND_API_TOKEN")
@@ -25,7 +26,6 @@ def get_score_label(score, dimension):
         labels = {True: "籌碼面強力買入", False: "籌碼面分歧", "low": "籌碼面流出"}
     else:
         labels = {True: "表現強勢", False: "表現一般", "low": "表現較弱"}
-    
     if score >= 70: return labels[True]
     if score >= 40: return labels[False]
     return labels["low"]
@@ -73,7 +73,7 @@ def run():
     print("🚀 Starting Market Scan...")
     end = datetime.now().strftime('%Y-%m-%d')
     start = (datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d')
-    watchlist = [{"id": "2330", "name": "台積電"}, {"id": "2454", "name": "聯發科"}, {"id": "2317", "name": "鴻海"}, {"id": "2388", "name, "富邦金"}, {"id": "2881", "name": "台中商業銀行"}]
+    watchlist = [{"id": "2330", "name": "台積電"}, {"id": "2454", "name": "聯發科"}, {"id": "2317", "name": "鴻海"}, {"id": "2388", "name": "富邦金"}, {"id": "2881", "name": "台中商業銀行"}]
     candidates = []
     for s in watchlist:
         print(f"Analyzing {s['name']}...")
@@ -84,18 +84,8 @@ def run():
             t_s, c_s, f_s = analyze_tech(p_df), analyze_chip(c_df), analyze_fund(f_data)
             ai_i, ai_s = analyze_ai(s['id'], s['name'])
             total = (f_s*0.3) + (t_s*0.25) + (c_s*0.25) + (ai_s*0.2)
-            
-            reasons = [
-                get_score_label(f_s, "fund"),
-                get_score_label(t_s, "tech"),
-                get_score_label(c_s, "chip")
-            ]
-            
-            candidates.append({
-                "id": s['id'], "name": s['name'], "total_score": round(total, 2),
-                "scores": {"fundamental": f_s, "technical": t_s, "chip": c_s, "ai": ai_s},
-                "ai_insight": ai_i, "reasons": reasons, "risk": "Low" if total > 60 else "Medium"
-            })
+            reasons = [get_score_label(f_s, "fund"), get_score_label(t_s, "tech"), get_score_label(c_s, "chip")]
+            candidates.append({"id": s['id'], "name": s['name'], "total_score": round(total, 2), "scores": {"fundamental": f_s, "technical": t_s, "chip": c_s, "ai": ai_s}, "ai_insight": ai_i, "reasons": reasons, "risk": "Low" if total > 60 else "Medium"})
             print(f"   - Score: {total:.2f} | AI: {ai_insight[:30]}...")
         except Exception as e:
             print(f"   - ❌ Error: {e}")
