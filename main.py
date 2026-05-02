@@ -24,6 +24,7 @@ def run_stock_picker():
             price_df = DataCollector.get_price_data(sid, start_date, end_date)
             chip_df = DataCollector.get_chip_data(sid, start_date, end_date)
             fund_data = DataCollector.get_fundamental_data(sid)
+            # Ensure we pass the DataFrame
             tech_score = TechnicalAnalyzer.analyze(price_df)
             chip_score = ChipAnalyzer.analyze(chip_df)
             fund_score = FundamentalAnalyzer.analyze(fund_data)
