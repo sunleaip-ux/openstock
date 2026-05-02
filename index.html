@@ -22,13 +22,13 @@
             </div>
             <div class="bg-slate-800/50 px-4 py-2 rounded-lg border border-slate-700 text-right">
                 <p class="text-xs text-slate-500 uppercase font-bold">Last Update</p>
-                <p class="text-sm font-mono text-slate-300">2026-05-03 00:27</p>
+                <p class="text-sm font-mono text-slate-300">2026-05-03 00:41</p>
             </div>
         </header>
         <div id="stock-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
     </div>
     <script>
-        const stocks = [{"id": "2330", "name": "台積電", "total_score": 73.2, "scores": {"fundamental": 63, "technical": 50, "chip": 96, "ai": 89}, "ai_insight": "台積電(2330)的現金流續增，營收增長率維持高位，庫存減少帶來的供應側風險降低。短期看，估計在$110-120之間，中期看，可能會繼續創新高點。", "reasons": ["基本面尚可", "技術面盤整", "籌碼面強力買入"], "risk": "Low"}, {"id": "2454", "name": "聯發科", "total_score": 63.6, "scores": {"fundamental": 77, "technical": 49, "chip": 45, "ai": 85}, "ai_insight": "聯發科(2454)：目前的EPS估值為25倍，較高於同業平均8.5倍，但經驗證過的運營能力和長期成長潛力仍維持。近期股價回調可能是反應季節性需求增加的預期，投資者可考慮買入以獲取下一波成長機會。", "reasons": ["基本面極其強勁", "技術面盤整", "籌碼面分歧"], "risk": "Low"}, {"id": "2317", "name": "鴻海", "total_score": 36.3, "scores": {"fundamental": 38, "technical": 50, "chip": 0, "ai": 62}, "ai_insight": "鴻海2317)：\n\n* 近期獲利率下滑，但資產報酬率仍維持高位。\n* 股票價格回暖，可能是因為業績回暖的預期。\n* 估值較低，入市風險相對較小。\n\n投資洞察：鴻海2317) 的股票價格具有一定的波動性，但總體上仍具有投資.value。", "reasons": ["基本面需關注", "技術面盤整", "籌碼面流出"], "risk": "Medium"}, {"id": "2388", "name": "富邦金", "total_score": 40.75, "scores": {"fundamental": 41, "technical": 51, "chip": 14, "ai": 61}, "ai_insight": "富邦金（2388）的投資洞察如下：\n\n「富邦金近期獲利能力逐漸攀升，預計2023年將繼續維持高獲利成長。同時，公司的資產質量也相對穩定，支持股價上漲。投資建議：中長線投資，目標價位為128元以上。」", "reasons": ["基本面尚可", "技術面盤整", "籌碼面流出"], "risk": "Medium"}, {"id": "2881", "name": "台中商業銀行", "total_score": 42.65, "scores": {"fundamental": 47, "technical": 51, "chip": 0, "ai": 79}, "ai_insight": "「台中商業銀行」盈餘可持續性好，貸款成長穩定，資產質量優秀。但是，貸款風險高、利息率下調可能影響獲利，需要監控。", "reasons": ["基本面尚可", "技術面盤整", "籌碼面流出"], "risk": "Medium"}];
+        const stocks = [{"id": "2330", "name": "台積電", "total_score": 73.35, "scores": {"fundamental": 83, "technical": 50, "chip": 75, "ai": 86}, "ai_insight": "根據 2026 年市場情況，台積電(2330)的庫存需求將持續增長，伴隨著5G、AIoT和雲端運算的推動。儲備型半導體的供應將繼續緊張，確保台積電的長期受歡迎價格。", "reasons": ["基本面極其強勁", "技術面盤整", "籌碼面強力買入"], "risk": "Low"}, {"id": "2454", "name": "聯發科", "total_score": 33.15, "scores": {"fundamental": 26, "technical": 51, "chip": 0, "ai": 63}, "ai_insight": "聯發科（2454）：2026 年，ARTS 和 MTK 的需求繼續增加，聯發科將繼續推動高階處理器和AI 智能化方案，帶來強大增長；同時，5G 和 Edge AI 的普及也將為聯發科創造更多機會。", "reasons": ["基本面需關注", "技術面盤整", "籌碼面流出"], "risk": "Medium"}, {"id": "2317", "name": "鴻海", "total_score": 67.15, "scores": {"fundamental": 73, "technical": 51, "chip": 70, "ai": 75}, "ai_insight": "鴻海（2317）：\n\n2026 年，鴻海應該繼續受惠於全球智能設備和AI浪潮，維持高增長。儘管競爭加劇，但鴻海的核心技術和品牌優勢將保持其領先地位。投資建議：維持中期至長期持有，並隨機觀察短期市場變化。", "reasons": ["基本面極其強勁", "技術面盤整", "籌碼面強力買入"], "risk": "Low"}, {"id": "2388", "name": "富邦金", "total_score": 55.9, "scores": {"fundamental": 58, "technical": 50, "chip": 40, "ai": 80}, "ai_insight": "富邦金(2388)：2026年可能是該公司利息收回增長的轉折點，隨著經濟恢復和通膨壓力減弱，預計其銀行業收入將回暖，帶動股價上漲。", "reasons": ["基本面尚可", "技術面盤整", "籌碼面分歧"], "risk": "Medium"}, {"id": "2881", "name": "台中商業銀行", "total_score": 53.8, "scores": {"fundamental": 91, "technical": 50, "chip": 0, "ai": 70}, "ai_insight": "2026年，台中商業銀行(2881)投資洞察：預期景氣好轉，台中的經濟活躍起，貸款需求增加，2881將維持強勁成長，股價上漲5-8%。", "reasons": ["基本面極其強勁", "技術面盤整", "籌碼面流出"], "risk": "Medium"}];
         
         function renderCards() {
             const container = document.getElementById('stock-cards');
@@ -42,7 +42,7 @@
                 card.className = 'glass p-6 rounded-3xl shadow-2xl flex flex-col';
                 
                 const name = stock.name || '未知個股';
-                const sid = stock.id || 'N/A';
+                const sid = stock.id || 'NA';
                 const score = stock.total_score || 0;
                 const risk = stock.risk || 'Medium';
                 const reasons = stock.reasons || ['無具體理由'];
@@ -59,7 +59,7 @@
                         </span>
                     </div>
                     <div class="chart-box mb-8">
-                        <canvas id="chart-${sid}"></canvas>
+                        <canvas id="stock-chart-${sid}"></canvas>
                     </div>
                     <div class="space-y-6 mt-auto">
                         <div>
@@ -80,56 +80,62 @@
         }
 
         function renderChart(stock) {
-            const canvas = document.getElementById('chart-' + stock.id);
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            const s = stock.scores || {};
-            
-            // ABSOLUTE mapping to prevent misalignment
-            const data = [
-                s.fundamental || 0,
-                s.technical || 0,
-                s.chip || 0,
-                s.ai || 0
-            ];
-            
-            new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: ['基本面', '技術面', '籌碼面', '消息面'],
-                    datasets: [{
-                        label: 'Score',
-                        data: data,
-                        backgroundColor: 'rgba(56, 189, 248, 0.4)',
-                        borderColor: 'rgba(56, 189, 248, 1)',
-                        borderWidth: 4,
-                        pointBackgroundColor: 'rgba(56, 189, 248, 1)',
-                        pointBorderColor: '#fff',
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        r: {
-                            angleLines: { color: 'rgba(255,255,255,0.1)' },
-                            grid: { color: 'rgba(255,255,255,0.1)' },
-                            pointLabels: { 
-                                color: '#94a3b8', 
-                                font: { size: 12, weight: 'bold', family: 'Inter' } 
-                            },
-                            ticks: { display: false },
-                            suggestedMin: 0,
-                            suggestedMax: 100
-                        }
+            try {
+                const canvas = document.getElementById('stock-chart-' + stock.id);
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const s = stock.scores || {};
+                
+                const cleanValue = (val) => {
+                    if (val === null || val === undefined) return 0;
+                    const parsed = parseFloat(val);
+                    return isNaN(parsed) ? 0 : parsed;
+                };
+
+                const data = [
+                    cleanValue(s.fundamental),
+                    cleanValue(s.technical),
+                    cleanValue(s.chip),
+                    cleanValue(s.ai)
+                ];
+                
+                new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['基本面', '技術面', '籌碼面', '消息面'],
+                        datasets: [{
+                            label: 'Score',
+                            data: data,
+                            backgroundColor: 'rgba(56, 189, 248, 0.4)',
+                            borderColor: 'rgba(56, 189, 248, 1)',
+                            borderWidth: 4,
+                            pointBackgroundColor: 'rgba(56, 189, 248, 1)',
+                            pointBorderColor: '#fff',
+                            pointRadius: 4
+                        }]
                     },
-                    plugins: { 
-                        legend: { display: false }
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                angleLines: { color: 'rgba(255,255,255,0.1)' },
+                                grid: { color: 'rgba(255,255,255,0.1)' },
+                                pointLabels: { 
+                                    color: '#94a3b8', 
+                                    font: { size: 12, weight: 'bold' } 
+                                },
+                                ticks: { display: false },
+                                suggestedMin: 0,
+                                suggestedMax: 100
+                            }
+                        },
+                        plugins: { legend: { display: false } }
                     }
-                }
-            });
+                });
+            } catch (e) {
+                console.error('Critical Chart Error:', e);
+            }
         }
         window.onload = renderCards;
     </script>
