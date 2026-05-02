@@ -4,19 +4,29 @@ import numpy as np
 class TechnicalAnalyzer:
     @staticmethod
     def analyze(df):
-        if df is None or (isinstance(df, pd.DataFrame) and df.empty):
-            return 0
         try:
-            # Use basic calculations to avoid any dependency errors
-            close_prices = df['close'] if 'close' in df.columns else df.iloc[:, -1]
+            # If it's a dict, convert to DF
+            if isinstance(df, dict):
+                df = pd.DataFrame(df)
+            
+            if df is None: return 0
+            
+            # Get prices
+            if 'close' in df.columns:
+                close_prices = df['close']
+            elif isinstance(df, pd.DataFrame) and not df.empty:
+                close_prices = df.iloc[:, -1]
+            else:
+                return 0
+                
             if len(close_prices) < 2: return 0
             
-            # Simple Moving Average Trend
+            # Simple Trend
             ma_short = close_prices.rolling(window=5).mean().iloc[-1]
             ma_long = close_prices.rolling(window=20).mean().iloc[-1]
             trend_score = 100 if ma_short > ma_long else 0
             
-            # Price Momentum
+            # Momentum
             momentum = ((close_prices.iloc[-1] - close_prices.iloc[0]) / close_prices.iloc[0]) * 100
             mom_score = 100 if momentum > 0 else 0
             
