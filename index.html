@@ -1,103 +1,122 @@
-
-        <!DOCTYPE html>
-        <html lang="zh-TW">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>OpenStock AI | 量化選股儀表板</title>
-            <script src="https://cdn.tailwindcss.com"></script>
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-            <style>
-                body { background-color: #0f172a; color: #f8fafc; }
-                .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-                .radar-container { position: relative; height: 250px; width: 250px; }
-            </style>
-        </head>
-        <body class="p-4 md:p-8">
-            <div class="max-w-6xl mx-auto">
-                <header class="flex justify-between items-center mb-8">
-                    <div>
-                        <h1 class="text-3xl font-bold text-sky-400">OpenStock AI</h1>
-                        <p class="text-slate-400">量化選股分析報告 | 市場狀態: <span class="text-green-400">Bullish</span></p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-xs text-slate-500 uppercase">Last Update</p>
-                        <p class="text-sm font-mono">2026-05-03 00:00</p>
-                    </div>
-                </header>
-                <div id="stock-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenStock AI | 量化選股儀表板</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .radar-container { position: relative; height: 250px; width: 250px; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+        <header class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-sky-400">OpenStock AI</h1>
+                <p class="text-slate-400">量化選股分析報告 | 市場狀態: <span class="text-green-400">Bullish</span></p>
             </div>
-            <script>
-                const stocks = [{"id": "2330", "name": "台積電", "total_score": 69.0, "scores": {"fundamental": 100, "technical": 0, "chip": 100, "ai": 70}, "ai_insight": "\"Taiwan Semiconductor Manufacturing Company (TSMC) is a leading independent semiconductor foundry, benefiting from the growth of 5G, AI, and cloud computing. Its diversified customer base and strong execution capabilities make it a reliable investment option. However, valuations are relatively high, so investors should monitor margins and capital efficiency to ensure sustainable profitability.\"", "reasons": ["技術面0分", "籌碼面100分", "基本面100分"], "risk": "Low"}, {"id": "2454", "name": "聯發科", "total_score": 54.0, "scores": {"fundamental": 50, "technical": 100, "chip": 0, "ai": 70}, "ai_insight": "\"Strong momentum in the gaming industry drives Largan's (2454) 1H22 revenue growth. As a leading supplier of camera modules, Largan benefits from increased demand for smartphones and AI-powered cameras. With a strong order backlog, we expect further upside potential. However, caution is advised due to high valuations and potential smartphone market volatility.\"", "reasons": ["技術面100分", "籌碼面0分", "基本面50分"], "risk": "Medium"}, {"id": "2317", "name": "鴻海", "total_score": 54.0, "scores": {"fundamental": 50, "technical": 100, "chip": 0, "ai": 70}, "ai_insight": "Based on historical data and technical analysis, I would say that Hon Hai Precision Industry Co., Ltd. (2317.TW) may be a good buy with a potential upside of 10-15%. The stock has been trending upwards since the pandemic, driven by strong demand for electronics. Support levels are around NT$90, while resistance is at NT$120. A break above NT$110 could trigger a buying spree.", "reasons": ["技術面100分", "籌碼面0分", "基本面50分"], "risk": "Medium"}, {"id": "2388", "name": "富邦金", "total_score": 79.0, "scores": {"fundamental": 50, "technical": 100, "chip": 100, "ai": 70}, "ai_insight": "\"Fubon Financial (2388) has been a steady performer, with solid earnings growth and relatively low volatility. Its diversified financial services portfolio, including banking and trust businesses, provides a stable source of income. With a strong management team and prudent risk management, Fubon Financial is well-positioned to ride out market fluctuations and deliver long-term value to shareholders.\"", "reasons": ["技術面100分", "籌碼面100分", "基本面50分"], "risk": "Low"}, {"id": "2881", "name": "台中商業銀行", "total_score": 79.0, "scores": {"fundamental": 50, "technical": 100, "chip": 100, "ai": 70}, "ai_insight": "**Investment Insights:**\n\nTaiwan's 2nd-largest bank by asset size, TMBC (2881) benefits from steady earnings growth driven by loan expansion and fee income. With a robust capital position and low NPL ratio, the bank is well-positioned to navigate potential interest rate hikes. Focus on its SME lending strategy and digital transformation initiatives for future growth opportunities. **Buy**", "reasons": ["技術面100分", "籌碼面100分", "基本面50分"], "risk": "Low"}];
-                function renderCards() {
-                    const container = document.getElementById('stock-cards');
-                    stocks.forEach(stock => {
-                        const card = document.createElement('div');
-                        card.className = 'glass p-6 rounded-2xl shadow-xl';
-                        card.innerHTML = `
-                            <div class="flex justify-between items-start mb-4">
-                                <div>
-                                    <h2 class="text-xl font-bold text-white">${stock.name} <span class="text-sm font-normal text-slate-400">(${stock.id})</span></h2>
-                                    <div class="text-3xl font-black text-sky-400 mt-1">${stock.score} <span class="text-sm font-normal text-slate-500">/ 100</span></div>
-                                </div>
-                                <span class="px-3 py-1 rounded-full text-xs font-bold ${stock.risk === 'Low' ? 'bg-green-900 text-green-400' : 'bg-yellow-900 text-yellow-400'}">
-                                    Risk: ${stock.risk}
-                                </span>
-                            </div>
-                            <div class="flex justify-center mb-6">
-                                <div class="radar-container">
-                                    <canvas id="chart-${stock.id}"></canvas>
-                                </div>
-                            </div>
-                            <div class="space-y-4">
-                                <div>
-                                    <p class="text-xs text-slate-500 uppercase mb-1">推薦理由</p>
-                                    <ul class="text-sm text-slate-300 space-y-1">
-                                        ${stock.reasons.map(r => `<li>✅ ${r}</li>`).join('')}
-                                    </ul>
-                                </div>
-                                <div class="p-3 bg-slate-800 rounded-lg border-l-4 border-sky-500">
-                                    <p class="text-xs text-sky-400 uppercase font-bold mb-1">🤖 AI 深度洞察</p>
-                                    <p class="text-sm text-slate-300 italic">${stock.ai_insight}</p>
-                                </div>
-                            </div>
-                        `;
-                        container.appendChild(card);
-                        renderChart(stock);
-                    });
-                }
-                function renderChart(stock) {
-                    const ctx = document.getElementById('chart-' + stock.id).getContext('2d');
-                    new Chart(ctx, {
-                        type: 'radar',
-                        data: {
-                            labels: ['基本面', '技術面', '籌碼面', '消息面'],
-                            datasets: [{
-                                label: 'Score',
-                                data: stock.component_scores,
-                                backgroundColor: 'rgba(56, 189, 248, 0.2)',
-                                borderColor: 'rgba(56, 189, 248, 1)',
-                                borderWidth: 2,
-                                pointBackgroundColor: 'rgba(56, 189, 248, 1)'
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                r: {
-                                    angleLines: { color: 'rgba(255,255,255,0.1)' },
-                                    grid: { color: 'rgba(255,255,255,0.1)' },
-                                    pointLabels: { color: '#94a3b8', font: { size: 12 } },
-                                    ticks: { display: false },
-                                    suggestedMin: 0,
-                                    suggestedMax: 100
-                                }
-                            },
-                            plugins: { legend: { display: false } }
-                        }
-                    });
-                }
-                window.onload = renderCards;
-            </script>
-        </body>
-        </html>
+            <div class="text-right">
+                <p class="text-xs text-slate-500 uppercase">Last Update</p>
+                <p class="text-sm font-mono">2026-05-03 00:02</p>
+            </div>
+        </header>
+        <div id="stock-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+    <script>
+        const stocks = [{"id": "2330", "name": "台積電", "total_score": 54.0, "scores": {"fundamental": 50, "technical": 0, "chip": 100, "ai": 70}, "ai_insight": "\"Taiwan Semiconductor Manufacturing Co. (TSMC) is a bellwether for the global semiconductor industry. With its strong manufacturing capacity and diverse customer base, TSMC is poised to benefit from the ongoing surge in demand for semiconductors. As a leading independent foundry, TSMC's financial performance is likely to be driven by its ability to capitalize on the growth of 5G, AI, and IoT markets. Investors should focus on TSMC's capacity utilization rates, pricing power, and customer diversification as key indicators for future performance.\"", "reasons": ["技術面0分", "籌碼面100分", "基本面50分"], "risk": "Medium"}, {"id": "2454", "name": "聯發科", "total_score": 44.0, "scores": {"fundamental": 100, "technical": 0, "chip": 0, "ai": 70}, "ai_insight": "\"Union Technology (2454) is a dominant player in the DRAM market. With a strong balance sheet and solid execution, the company has consistently delivered impressive financial results. As demand for high-performance computing and AI accelerates, Union's leading position in the industry's transition to 3D NAND and EUV technologies positions it well for long-term growth. A buy recommendation.\"", "reasons": ["技術面0分", "籌碼面0分", "基本面100分"], "risk": "Medium"}, {"id": "2317", "name": "鴻海", "total_score": 29.0, "scores": {"fundamental": 50, "technical": 0, "chip": 0, "ai": 70}, "ai_insight": "\"Hon Hai Precision Industry Co., Ltd. (2317.TW) is a leading Taiwan-based electronics manufacturing services provider. With its diversified client base and strong relationships with top-tier customers, Hon Hai is well-positioned to benefit from the growing demand for 5G infrastructure, artificial intelligence, and cloud computing. Look for potential upswings in revenue and profitability driven by the company's expanding presence in these high-growth areas.\"", "reasons": ["技術面0分", "籌碼面0分", "基本面50分"], "risk": "Medium"}, {"id": "2388", "name": "富邦金", "total_score": 79.0, "scores": {"fundamental": 50, "technical": 100, "chip": 100, "ai": 70}, "ai_insight": "\"Richesse (2388) is a well-established Taiwanese bank with a strong franchise in mortgage lending and wealth management. Despite market volatility, the company's robust capital base and disciplined risk management should help maintain stability. As Taiwan's economy rebounds, Richesse's diversified loan portfolio and healthy balance sheet position it for long-term growth. Buy on dips.\"", "reasons": ["技術面100分", "籌碼面100分", "基本面50分"], "risk": "Low"}, {"id": "2881", "name": "台中商業銀行", "total_score": 94.0, "scores": {"fundamental": 100, "technical": 100, "chip": 100, "ai": 70}, "ai_insight": "**Insight for TWSE: 2881 - Taichung Commercial Bank**\n\n* Consolidated net interest income has been stable, driven by steady loan growth and moderate NIM expansion.\n* Fee-based income has increased, benefiting from the bank's growing wealth management business.\n* Provisions for bad debts have remained low due to controlled risk-taking and a relatively stable loan book.", "reasons": ["技術面100分", "籌碼面100分", "基本面100分"], "risk": "Low"}];
         
+        function renderCards() {
+            const container = document.getElementById('stock-cards');
+            if (!stocks || stocks.length === 0) {
+                container.innerHTML = '<p class="text-center col-span-full text-slate-500">目前無分析數據，請重新執行掃描。</p>';
+                return;
+            }
+            
+            stocks.forEach(stock => {
+                const card = document.createElement('div');
+                card.className = 'glass p-6 rounded-2xl shadow-xl';
+                
+                // Use safe defaults for all variables
+                const name = stock.name || '未知個股';
+                const sid = stock.id || 'N/A';
+                const score = stock.total_score || 0;
+                const risk = stock.risk || 'Medium';
+                const reasons = stock.reasons || ['無具體理由'];
+                const insight = stock.ai_insight || 'AI 分析暫時不可用';
+                const component_scores = stock.scores ? Object.values(stock.scores) : [0, 0, 0, 0];
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h2 class="text-xl font-bold text-white">${name} <span class="text-sm font-normal text-slate-400">(${sid})</span></h2>
+                            <div class="text-3xl font-black text-sky-400 mt-1">${score} <span class="text-sm font-normal text-slate-500">/ 100</span></div>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-xs font-bold ${risk === 'Low' ? 'bg-green-900 text-green-400' : 'bg-yellow-900 text-yellow-400'}">
+                            Risk: ${risk}
+                        </span>
+                    </div>
+                    <div class="flex justify-center mb-6">
+                        <div class="radar-container">
+                            <canvas id="chart-${sid}"></canvas>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-xs text-slate-500 uppercase mb-1">推薦理由</p>
+                            <ul class="text-sm text-slate-300 space-y-1">
+                                ${reasons.map(r => `<li>✅ ${r}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div class="p-3 bg-slate-800 rounded-lg border-l-4 border-sky-500">
+                            <p class="text-xs text-sky-400 uppercase font-bold mb-1">🤖 AI 深度洞察</p>
+                            <p class="text-sm text-slate-300 italic">${insight}</p>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+                renderChart(stock);
+            });
+        }
+
+        function renderChart(stock) {
+            const canvas = document.getElementById('chart-' + stock.id);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const data = stock.scores ? Object.values(stock.scores) : [0, 0, 0, 0];
+            
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['基本面', '技術面', '籌碼面', '消息面'],
+                    datasets: [{
+                        label: 'Score',
+                        data: data,
+                        backgroundColor: 'rgba(56, 189, 248, 0.2)',
+                        borderColor: 'rgba(56, 189, 248, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(56, 189, 248, 1)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255,255,255,0.1)' },
+                            grid: { color: 'rgba(255,255,255,0.1)' },
+                            pointLabels: { color: '#94a3b8', font: { size: 12 } },
+                            ticks: { display: false },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+        window.onload = renderCards;
+    </script>
+</body>
+</html>
