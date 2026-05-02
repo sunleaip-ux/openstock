@@ -86,11 +86,12 @@ def run():
             total = (f_s*0.3) + (t_s*0.25) + (c_s*0.25) + (ai_s*0.2)
             reasons = [get_score_label(f_s, "fund"), get_score_label(t_s, "tech"), get_score_label(c_s, "chip")]
             candidates.append({"id": s['id'], "name": s['name'], "total_score": round(total, 2), "scores": {"fundamental": f_s, "technical": t_s, "chip": c_s, "ai": ai_s}, "ai_insight": ai_i, "reasons": reasons, "risk": "Low" if total > 60 else "Medium"})
-            print(f"   - Score: {total:.2f} | AI: {ai_insight[:30]}...")
+            print(f"   - Score: {total:.2f} | AI: {ai_i[:30]}...")
         except Exception as e:
             print(f"   - ❌ Error: {e}")
     DashboardGenerator.generate(candidates, "Bullish")
     DashboardGenerator.deploy()
+    Notifier.send_summary(candidates)
     print("✅ DONE!")
 
 if __name__ == "__main__":
