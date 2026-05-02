@@ -22,13 +22,13 @@
                     </div>
                     <div class="text-right">
                         <p class="text-xs text-slate-500 uppercase">Last Update</p>
-                        <p class="text-sm font-mono">2026-05-02 22:38</p>
+                        <p class="text-sm font-mono">2026-05-02 22:41</p>
                     </div>
                 </header>
                 <div id="stock-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             </div>
             <script>
-                const stocks = [{"id": "2330", "name": "台積電", "score": 30.0, "component_scores": [0, 30, 50, 50], "reasons": ["技術面30分", "籌碼面50分", "基本面0分"], "ai_insight": "AI分析暫時不可用", "risk": "Medium"}, {"id": "2454", "name": "聯發科", "score": 37.5, "component_scores": [0, 60, 50, 50], "reasons": ["技術面60分", "籌碼面50分", "基本面0分"], "ai_insight": "AI分析暫時不可用", "risk": "Medium"}, {"id": "2317", "name": "鴻海", "score": 30.0, "component_scores": [0, 30, 50, 50], "reasons": ["技術面30分", "籌碼面50分", "基本面0分"], "ai_insight": "AI分析暫時不可用", "risk": "Medium"}, {"id": "2388", "name": "富邦金", "score": 37.5, "component_scores": [0, 60, 50, 50], "reasons": ["技術面60分", "籌碼面50分", "基本面0分"], "ai_insight": "AI分析暫時不可用", "risk": "Medium"}, {"id": "2881", "name": "台中商業銀行", "score": 30.0, "component_scores": [0, 30, 50, 50], "reasons": ["技術面30分", "籌碼面50分", "基本面0分"], "ai_insight": "AI分析暫時不可用", "risk": "Medium"}];
+                const stocks = [{"id": "2330", "name": "台積電", "score": 48.0, "component_scores": [60, 30, 50, 50], "reasons": ["技術面30分", "籌碼面50分", "基本面60分"], "ai_insight": "AI分析暫時不可用", "risk": "Medium"}, {"id": "2454", "name": "聯發科", "score": 58.5, "component_scores": [70, 60, 50, 50], "reasons": ["技術面60分", "籌碼面50分", "基本面70分"], "ai_insight": "AI分析暫時不可用", "risk": "Medium"}, {"id": "2317", "name": "鴻海", "score": 48.0, "component_scores": [60, 30, 50, 50], "reasons": ["技術面30分", "籌碼面50分", "基本面60分"], "ai_insight": "AI分析暫時不可用", "risk": "Medium"}, {"id": "2388", "name": "富邦金", "score": 67.5, "component_scores": [100, 60, 50, 50], "reasons": ["技術面60分", "籌碼面50分", "基本面100分"], "ai_insight": "AI分析暫時不可用", "risk": "Medium"}, {"id": "2881", "name": "台中商業銀行", "score": 48.0, "component_scores": [60, 30, 50, 50], "reasons": ["技術面30分", "籌碼面50分", "基本面60分"], "ai_insight": "AI分析暫時不可用", "risk": "Medium"}];
                 function renderCards() {
                     const container = document.getElementById('stock-cards');
                     stocks.forEach(stock => {
