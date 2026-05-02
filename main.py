@@ -27,7 +27,6 @@ def get_score_label(score, dimension):
 
 def get_price_data(sid, start, end):
     dates = pd.date_range(start=start, end=end)
-    # Generate more realistic trend data
     return pd.DataFrame({"close": np.cumsum(np.random.normal(0.1, 1, len(dates))) + 500}, index=dates)
 
 def get_chip_data(sid, start, end):
@@ -35,7 +34,6 @@ def get_chip_data(sid, start, end):
     return pd.DataFrame({"buy": np.random.randint(100, 1000, len(dates)), "sell": np.random.randint(100, 1000, len(dates))}, index=dates)
 
 def get_fund_data(sid):
-    # Realistic range for financial metrics
     return {"roe": np.random.uniform(2, 25), "eps_growth": np.random.uniform(-10, 40), "revenue_growth": np.random.uniform(-10, 40)}
 
 def analyze_tech(df):
@@ -43,7 +41,6 @@ def analyze_tech(df):
         close = df['close']
         ma5 = close.rolling(5).mean().iloc[-1]
         ma20 = close.rolling(20).mean().iloc[-1]
-        # Scale score based on the ratio of MA5/MA20
         ratio = ma5 / ma20
         score = 50 + (ratio - 1) * 200
         return max(min(round(score), 100), 0)
@@ -52,25 +49,23 @@ def analyze_tech(df):
 def analyze_chip(df):
     try:
         net_buy = df['buy'].sum() - df['sell'].sum()
-        # Scale score based on net buying volume
         score = 50 + (net_buy / 10000) * 100
         return max(min(round(score), 100), 0)
     except: return 50
 
 def analyze_fund(data):
     score = 0
-    # ROE contribution (max 40)
     score += min(data.get('roe', 0) * 2, 40)
-    # EPS growth contribution (max 30)
     score += max(0, min(data.get('eps_growth', 0) * 1, 30))
-    # Revenue growth contribution (max 30)
     score += max(0, min(data.get('revenue_growth', 0) * 1, 30))
     return max(min(round(score), 100), 0)
 
 def analyze_ai(sid, name):
     try:
+        today = datetime.now().strftime('%Y-%m-%d')
         url = f"{LLM_API_BASE}/chat/completions"
-        payload = {"model": LLM_MODEL, "messages": [{"role": "system", "content": "你是一位專業的量化分析師。請針對個股提供簡短、精準的投資洞察（50字以內）。請務必使用繁體中文回答，直接輸出結論，不要有開場白。"}, {"role": "user", "content": f"個股：{name}({sid})\n請給出投資洞察："}] , "temperature": 0.7}
+        system_prompt = f"你是一位頂級量化分析師。今天是 {today} 年。請針對個股提供基於 2026 年市場視角的簡短、精準投資洞察（50字以內）。請務必使用繁體中文，直接輸出 2026 年的結論，嚴禁提到 2023 年或過時的展望。不要有開場白。"
+        payload = {"model": LLM_MODEL, "messages": [{"role": "system", "content": system_prompt}, {"role": "user", "content": f"個股：{name}({sid})\n請給出 2026 年的投資洞察："}] , "temperature": 0.7}
         res = requests.post(url, json=payload, timeout=10)
         return res.json()['choices'][0]['message']['content'].strip(), np.random.randint(60, 95)
     except: return "AI分析暫時不可用", 50

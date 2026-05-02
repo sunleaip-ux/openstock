@@ -92,17 +92,21 @@ class DashboardGenerator:
         function renderChart(stock) {
             try {
                 const canvas = document.getElementById('stock-chart-' + stock.id);
-                if (!canvas) throw new Error('Canvas not found');
-                
+                if (!canvas) return;
                 const ctx = canvas.getContext('2d');
                 const s = stock.scores || {};
                 
-                // FORCE NUMERIC conversion and fallback to 0
+                const cleanValue = (val) => {
+                    if (val === null || val === undefined) return 0;
+                    const parsed = parseFloat(val);
+                    return isNaN(parsed) ? 0 : parsed;
+                };
+
                 const data = [
-                    Number(s.fundamental) || 0,
-                    Number(s.technical) || 0,
-                    Number(s.chip) || 0,
-                    Number(s.ai) || 0
+                    cleanValue(s.fundamental),
+                    cleanValue(s.technical),
+                    cleanValue(s.chip),
+                    cleanValue(s.ai)
                 ];
                 
                 new Chart(ctx, {
@@ -140,11 +144,7 @@ class DashboardGenerator:
                     }
                 });
             } catch (e) {
-                console.error('Chart Error for stock ' + stock.id, e);
-                const container = document.getElementById('stock-chart-' + stock.id);
-                if (container) {
-                    container.innerHTML = '<div class="flex items-center justify-center h-full text-red-400 text-xs">圖表數據解析錯誤</div>';
-                }
+                console.error('Critical Chart Error:', e);
             }
         }
         window.onload = renderCards;
@@ -164,9 +164,10 @@ class DashboardGenerator:
         try:
             repo = Repo(".")
             repo.git.add("index.html")
-            repo.index.commit("Bulletproof JS: Type casting and Try-Catch")
+            repo.index.commit("Critical Fix: Time-Correction & Strict Cleaning")
             origin = repo.remote(name="origin")
             origin.push(refspec="main:main", force=True)
-            print("🚀 Deployed Bulletproof JS to GitHub Pages!")
+            print("🚀 Deployed Critical Fix to GitHub Pages!")
         except Exception as e:
             print(f"❌ Deploy failed: {e}")
+
