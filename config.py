@@ -12,3 +12,9 @@ STOCK_CRASH_THRESHOLD = -0.03
 MIN_ROE = 10
 MIN_EPS_GROWTH = 5
 MIN_REVENUE_GROWTH = 5
+WEIGHTS = {
+    "fundamental": 0.3,
+    "technical": 0.25,
+    "chip": 0.25,
+    "ai": 0.2
+}
