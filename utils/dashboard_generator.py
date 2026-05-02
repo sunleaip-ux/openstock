@@ -1,25 +1,128 @@
-import json, os, subprocess
+import os
+import json
 from datetime import datetime
-from config import GITHUB_USERNAME, GITHUB_REPO, GITHUB_TOKEN, GITHUB_EMAIL
+from git import Repo
 
 class DashboardGenerator:
     @staticmethod
-    def generate(recommended_stocks, market_trend):
-        date_str = datetime.now().strftime("%Y-%m-%d %H:%M")
-        stocks_json = json.dumps(recommended_stocks, ensure_ascii=False)
-        html_template = f"""<!DOCTYPE html><html><head><meta charset='UTF-8'><title>OpenStock AI</title><script src='https://cdn.tailwindcss.com'></script><script src='https://cdn.jsdelivr.net/npm/chart.js'></script><style>body{{background-color:#0f172a;color:#e2e8f0;}} .stock-card{{background-color:#1e293b;border:1px solid #334155;}}</style></head><body class='p-8'><div class='max-w-6xl mx-auto'><h1 class='text-4xl font-bold text-white mb-8'>📈 OpenStock AI</h1><div id='stock-container' class='grid grid-cols-1 md:grid-cols-3 gap-6'></div></div><script>const stocks={stocks_json}; const container=document.getElementById('stock-container'); stocks.forEach((stock, index)=>{{ const card=document.createElement('div'); card.className='stock-card p-6 rounded-2xl'; card.innerHTML=`<h2 class='text-2xl font-bold text-white mb-4'>${{stock.name}} (${{stock.id}}) <span class='text-sky-400 ml-2'>${{stock.score}}</span></h2><div class='h-48 mb-4'><canvas id='chart-${{index}}'></canvas></div><div class='text-sm text-slate-300 mb-4'>${{stock.reasons.map(r=>`<div>✅ ${{r}}</div>`).join('')}}</div><div class='p-2 bg-slate-800 rounded text-xs italic text-sky-400'>${{stock.ai_insight}}</div>`; container.appendChild(card); const ctx=document.getElementById(`chart-${{index}}`).getContext('2d'); new Chart(ctx, {{type:'radar', data:{{labels:['基本面','技術面','籌碼面','消息面'], datasets:[{{data:stock.component_scores, borderColor:'#38bdf8', backgroundColor:'rgba(56,189,248,0.2)'}}]}}, options:{{scales:{{r:{{beginAtZero:true,max:100,ticks:{{display:false}}}}}}, plugins:{{legend:{{display:false}}}}}})}}); }});</script></body></html>"""
-        with open("index.html", "w", encoding="utf-8") as f: f.write(html_template)
-        return "index.html"
+    def generate(stocks, market_trend="Bullish"):
+        stocks_json = json.dumps(stocks, ensure_ascii=False)
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+        
+        html_template = f"""
+        <!DOCTYPE html>
+        <html lang="zh-TW">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>OpenStock AI | 量化選股儀表板</title>
+            <script src="https://cdn.tailwindcss.com"></script>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <style>
+                body {{ background-color: #0f172a; color: #f8fafc; }}
+                .glass {{ background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }}
+                .radar-container {{ position: relative; height: 250px; width: 250px; }}
+            </style>
+        </head>
+        <body class="p-4 md:p-8">
+            <div class="max-w-6xl mx-auto">
+                <header class="flex justify-between items-center mb-8">
+                    <div>
+                        <h1 class="text-3xl font-bold text-sky-400">OpenStock AI</h1>
+                        <p class="text-slate-400">量化選股分析報告 | 市場狀態: <span class="text-green-400">{market_trend}</span></p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs text-slate-500 uppercase">Last Update</p>
+                        <p class="text-sm font-mono">{timestamp}</p>
+                    </div>
+                </header>
+                <div id="stock-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </div>
+            <script>
+                const stocks = {stocks_json};
+                function renderCards() {{
+                    const container = document.getElementById('stock-cards');
+                    stocks.forEach(stock => {{
+                        const card = document.createElement('div');
+                        card.className = 'glass p-6 rounded-2xl shadow-xl';
+                        card.innerHTML = `
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h2 class="text-xl font-bold text-white">${{stock.name}} <span class="text-sm font-normal text-slate-400">(${{stock.id}})</span></h2>
+                                    <div class="text-3xl font-black text-sky-400 mt-1">${{stock.score}} <span class="text-sm font-normal text-slate-500">/ 100</span></div>
+                                </div>
+                                <span class="px-3 py-1 rounded-full text-xs font-bold ${{stock.risk === 'Low' ? 'bg-green-900 text-green-400' : 'bg-yellow-900 text-yellow-400'}}">
+                                    Risk: ${{stock.risk}}
+                                </span>
+                            </div>
+                            <div class="flex justify-center mb-6">
+                                <div class="radar-container">
+                                    <canvas id="chart-${{stock.id}}"></canvas>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="text-xs text-slate-500 uppercase mb-1">推薦理由</p>
+                                    <ul class="text-sm text-slate-300 space-y-1">
+                                        ${{stock.reasons.map(r => `<li>✅ ${{r}}</li>`).join('')}}
+                                    </ul>
+                                </div>
+                                <div class="p-3 bg-slate-800 rounded-lg border-l-4 border-sky-500">
+                                    <p class="text-xs text-sky-400 uppercase font-bold mb-1">🤖 AI 深度洞察</p>
+                                    <p class="text-sm text-slate-300 italic">${{stock.ai_insight}}</p>
+                                </div>
+                            </div>
+                        `;
+                        container.appendChild(card);
+                        renderChart(stock);
+                    }});
+                }}
+                function renderChart(stock) {{
+                    const ctx = document.getElementById('chart-' + stock.id).getContext('2d');
+                    new Chart(ctx, {{
+                        type: 'radar',
+                        data: {{
+                            labels: ['基本面', '技術面', '籌碼面', '消息面'],
+                            datasets: [{{
+                                label: 'Score',
+                                data: stock.component_scores,
+                                backgroundColor: 'rgba(56, 189, 248, 0.2)',
+                                borderColor: 'rgba(56, 189, 248, 1)',
+                                borderWidth: 2,
+                                pointBackgroundColor: 'rgba(56, 189, 248, 1)'
+                            }}]
+                        }},
+                        options: {{
+                            scales: {{
+                                r: {{
+                                    angleLines: {{ color: 'rgba(255,255,255,0.1)' }},
+                                    grid: {{ color: 'rgba(255,255,255,0.1)' }},
+                                    pointLabels: {{ color: '#94a3b8', font: {{ size: 12 }} }},
+                                    ticks: {{ display: false }},
+                                    suggestedMin: 0,
+                                    suggestedMax: 100
+                                }}
+                            }},
+                            plugins: {{ legend: {{ display: false }} }}
+                        }}
+                    }});
+                }}
+                window.onload = renderCards;
+            </script>
+        </body>
+        </html>
+        """
+        with open("index.html", "w", encoding="utf-8") as f:
+            f.write(html_template)
+        print("✅ index.html generated with data injection!")
+
     @staticmethod
     def deploy():
         try:
-            subprocess.run(["git", "config", "user.email", GITHUB_EMAIL], check=True)
-            subprocess.run(["git", "config", "user.name", GITHUB_USERNAME], check=True)
-            remote_url = f"https://{GITHUB_TOKEN}@github.com/{GITHUB_USERNAME}/{GITHUB_REPO}.git"
-            if not os.path.exists(".git"):
-                subprocess.run(["git", "clone", remote_url, "."], check=True)
-            subprocess.run(["git", "add", "index.html"], check=True)
-            subprocess.run(["git", "commit", "-m", f"Update {datetime.now()}"], check=True)
-            subprocess.run(["git", "push", "origin", "main"], check=True)
-            return True
-        except: return False
+            repo = Repo(".")
+            repo.git.add("index.html")
+            repo.index.commit("Update data")
+            repo.remote().push()
+            print("🚀 Deployed to GitHub Pages successfully!")
+        except Exception as e:
+            print(f"❌ Deploy failed: {e}")
