@@ -1,0 +1,109 @@
+
+    <!DOCTYPE html>
+    <html lang="zh-TW">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>毛毛的功能導覽</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+            body { background-color: #0f172a; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+            .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+            .feature-card:hover { border-color: #3b82f6; background: rgba(59, 130, 246, 0.1); transform: translateY(-2px); }
+            .active-badge { background: linear-gradient(90deg, #3b82f6, #8b5cf6); }
+            .service-link:hover { border-color: #3b82f6; background: rgba(59, 130, 246, 0.1); transform: scale(1.01); }
+        </style>
+    </head>
+    <body class="p-4 md:p-8 flex justify-center">
+        <div class="max-w-4xl w-full space-y-12">
+            <!-- Header -->
+            <div class="text-center space-y-2">
+                <h1 class="text-4xl font-bold text-white tracking-tight">毛毛的功能導覽</h1>
+                <p class="text-slate-400">您的 AI COO 執行能力全集</p>
+            </div>
+
+            <!-- Section 1: General Capabilities -->
+            <div class="space-y-6">
+                <div class="flex items-center space-x-2">
+                    <span class="text-2xl">🛠️</span>
+                    <h2 class="text-2xl font-semibold text-white">核心執行能力</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="glass p-5 rounded-2xl feature-card transition-all cursor-default">
+                        <div class="text-blue-400 font-bold mb-2 flex items-center space-x-2">
+                            <span>🌐</span> <span>資訊獲取與研究</span>
+                        </div>
+                        <p class="text-sm text-slate-400">即時全網搜尋、深度網頁分析、學術論文獲取及內容精煉總結。</p>
+                    </div>
+                    <div class="glass p-5 rounded-2xl feature-card transition-all cursor-default">
+                        <div class="text-blue-400 font-bold mb-2 flex items-center space-x-2">
+                            <span>💻</span> <span>系統操作與開發</span>
+                        </div>
+                        <p class="text-sm text-slate-400">Python 腳本編寫與執行、終端機指令操作、文件精準讀寫與修改。</p>
+                    </div>
+                    <div class="glass p-5 rounded-2xl feature-card transition-all cursor-default">
+                        <div class="text-blue-400 font-bold mb-2 flex items-center space-x-2">
+                            <span>⏰</span> <span>自動化排程 (Cron)</span>
+                        </div>
+                        <p class="text-sm text-slate-400">設定任意時間觸發任務，實現自動化監控、定期報告與主動通知。</p>
+                    </div>
+                    <div class="glass p-5 rounded-2xl feature-card transition-all cursor-default">
+                        <div class="text-blue-400 font-bold mb-2 flex items-center space-x-2">
+                            <span>🔌</span> <span>生態系串接 (Skills)</span>
+                        </div>
+                        <p class="text-sm text-slate-400">Google Workspace, Notion, GitHub, Apple 生態等 API 深度整合。</p>
+                    </div>
+                    <div class="glass p-5 rounded-2xl feature-card transition-all cursor-default">
+                        <div class="text-blue-400 font-bold mb-2 flex items-center space-x-2">
+                            <span>🧠</span> <span>管理與記憶</span>
+                        </div>
+                        <p class="text-sm text-slate-400">跨 Session 長期記憶、複雜目標拆解、多代理子任務委派。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Active Services -->
+            <div class="space-y-6">
+                <div class="flex items-center space-x-2">
+                    <span class="text-2xl">🚀</span>
+                    <h2 class="text-2xl font-semibold text-white">目前運行的服務</h2>
+                </div>
+                <div class="space-y-4">
+                    <!-- Service 1: News -->
+                    <div class="glass p-6 rounded-3xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-l-4 border-blue-500">
+                        <div class="space-y-1">
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-white text-lg">📰 3+3+3 新聞速報</span>
+                                <span class="active-badge text-[10px] px-2 py-0.5 rounded-full text-white font-bold">運行中</span>
+                            </div>
+                            <p class="text-sm text-slate-400">每日 08:00 / 12:00 / 18:00 推送 台股 + 美股 + 國際重大新聞。</p>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xs font-mono text-slate-500 bg-slate-800 px-3 py-1 rounded-full">Cron: 0 8,12,18 * * *</div>
+                            <span class="text-xs text-slate-500">交付至 Telegram</span>
+                        </div>
+                    </div>
+                    <!-- Service 2: Goal Tracking -->
+                    <a href="dashboard.html" class="service-link glass p-6 rounded-3xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-l-4 border-purple-500 transition-all block">
+                        <div class="space-y-1">
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-white text-lg">🎯 目標陪跑系統 (紀錄官模式)</span>
+                                <span class="active-badge text-[10px] px-2 py-0.5 rounded-full text-white font-bold">運行中</span>
+                            </div>
+                            <p class="text-sm text-slate-400">平日 21:00 紀錄進度 / 週日 21:00 總結 $ightarrow$ 全自動更新 HTML 看板。</p>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xs font-mono text-slate-500 bg-slate-800 px-3 py-1 rounded-full">Cron: Multi-schedule</div>
+                            <div class="text-xs font-bold text-blue-400 hover:underline">進入看板 →</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <footer class="text-center text-slate-600 text-xs pt-8">
+                由 毛毛 自動生成 | 航哥私用功能導覽頁
+            </footer>
+        </div>
+    </body>
+    </html>
+    

@@ -1,0 +1,26 @@
+import os
+from dotenv import load_dotenv
+load_dotenv()
+FINMIND_TOKEN = os.getenv("FINMIND_API_TOKEN")
+LINE_TOKEN = os.getenv("LINE_NOTIFY_TOKEN")
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "ollama")
+LLM_MODEL = os.getenv("LLM_MODEL", "llama3")
+GITHUB_USERNAME = os.getenv("GITHUB_USERNAME")
+GITHUB_REPO = os.getenv("GITHUB_REPO")
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+GITHUB_EMAIL = os.getenv("GITHUB_EMAIL")
+MIN_ROE = 15.0
+MIN_EPS_GROWTH = 0.0
+MIN_REVENUE_GROWTH = 0.0
+RSI_UPPER = 70
+MA_PERIODS = [5, 20, 60]
+INSTITUTION_BUY_DAYS = 3
+WEIGHTS = {"fundamental": 0.30, "technical": 0.25, "chip": 0.25, "news": 0.20}
+FINAL_SCORE_THRESHOLD = 75
+TIMEZONE = os.getenv("TIMEZONE", "Asia/Taipei")
+SENTRY_INTERVAL_MINUTES = 15
+INDEX_CRASH_THRESHOLD = -0.02
+POSITION_CRASH_THRESHOLD = -0.03
+MARKET_INDEX_ID = "0050"

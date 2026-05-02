@@ -1,0 +1,1 @@
+pandas\npandas-ta\nfinmind\npython-dotenv\napscheduler\nrequests\nbeautifulsoup4\nogenai\nopenai\ngspread\noauth2client
