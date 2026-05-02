@@ -21,13 +21,13 @@
             </div>
             <div class="text-right">
                 <p class="text-xs text-slate-500 uppercase">Last Update</p>
-                <p class="text-sm font-mono">2026-05-03 00:13</p>
+                <p class="text-sm font-mono">2026-05-03 00:16</p>
             </div>
         </header>
         <div id="stock-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </div>
     <script>
-        const stocks = [{"id": "2330", "name": "台積電", "total_score": 29.0, "scores": {"fundamental": 50, "technical": 0, "chip": 0, "ai": 70}, "ai_insight": "「台積電(2330)的 earnings growth仍然維持穩定，2023年EPS預期將繼續增加12%以上。但是，近期的技術指標表現較為疲弱，短期下跌風險增加。投資者可以考慮在價格低位進行買入，但需要注意長期趨勢仍然bullish。」", "reasons": ["基本面尚可", "技術面疲弱", "籌碼面流出"], "risk": "Medium"}, {"id": "2454", "name": "聯發科", "total_score": 54.0, "scores": {"fundamental": 50, "technical": 100, "chip": 0, "ai": 70}, "ai_insight": "聯發科2454)：維持強勢走勢，技術指標顯示買氣強勁，RSI仍在中區，MACD快線破上影線，短期高點可能達到新的高度。", "reasons": ["基本面尚可", "技術趨勢強勢", "籌碼面流出"], "risk": "Medium"}, {"id": "2317", "name": "鴻海", "total_score": 64.0, "scores": {"fundamental": 0, "technical": 100, "chip": 100, "ai": 70}, "ai_insight": "鴻海(2317)的技術指標顯示，股票已經從低點反彈，MACD金線呈現上漲趋勢。RSI值約60%，且股價未超越強買區域。短期看法：可能繼續上漲，但需注意50日均線的支持作用。如果股價跌破支撐點，則需要重新評估投資機會。", "reasons": ["基本面需關注", "技術趨勢強勢", "籌碼面強力買入"], "risk": "Low"}, {"id": "2388", "name": "富邦金", "total_score": 44.0, "scores": {"fundamental": 100, "technical": 0, "chip": 0, "ai": 70}, "ai_insight": "「富邦金(2388)的股票價值較低，以獲取高獲利回報。但是，商業貸款業務增加，風險也隨之升高。建議觀望或短期操作。」", "reasons": ["基本面極其強勁", "技術面疲弱", "籌碼面流出"], "risk": "Medium"}, {"id": "2881", "name": "台中商業銀行", "total_score": 54.0, "scores": {"fundamental": 50, "technical": 100, "chip": 0, "ai": 70}, "ai_insight": "台中商業銀行(2881)的營運表現相對穩定，但核心獲利能力和資產質量仍需改善。近期股票價格上漲主要是因為政府實施經濟刺激措施，帶動金融業景氣。但在未來，銀行業需要面對網銀競爭和 Interest RateRisk的挑戰，投資者應該保持警惕。", "reasons": ["基本面尚可", "技術趨勢強勢", "籌碼面流出"], "risk": "Medium"}];
+        const stocks = [{"id": "2330", "name": "台積電", "total_score": 64.0, "scores": {"fundamental": 0, "technical": 100, "chip": 100, "ai": 70}, "ai_insight": "台積電(2330)股價近期上漲趨勢持續，且資金流入強勁，短期可能繼續上漲。中長期看，台積電的半導體需求仍然是主要收入來源，且大型客戶訂單未見下降跡象，因此投資機會相對穩定。但是，全球經濟變化和競爭加劇也需要注意。", "reasons": ["基本面需關注", "技術趨勢強勢", "籌碼面強力買入"], "risk": "Low"}, {"id": "2454", "name": "聯發科", "total_score": 44.0, "scores": {"fundamental": 100, "technical": 0, "chip": 0, "ai": 70}, "ai_insight": "聯發科（2454）：目前處於高成長階段，5G 和 AI 等新技術的需求推動了旗下晶片銷量的上漲。然而，整體市場仍需要時間適應 5G 的發展，聯發科需要繼續推出具有競爭力的產品以維持領先地位。", "reasons": ["基本面極其強勁", "技術面疲弱", "籌碼面流出"], "risk": "Medium"}, {"id": "2317", "name": "鴻海", "total_score": 54.0, "scores": {"fundamental": 50, "technical": 0, "chip": 100, "ai": 70}, "ai_insight": "鴻海(2317)：短期下跌趨勢，MACD穿越 Signal線，短期止損於22.5元；中長期看好，獲利波動率增加，資產配置優惠，目標價格25.5元。", "reasons": ["基本面尚可", "技術面疲弱", "籌碼面強力買入"], "risk": "Medium"}, {"id": "2388", "name": "富邦金", "total_score": 29.0, "scores": {"fundamental": 50, "technical": 0, "chip": 0, "ai": 70}, "ai_insight": "富邦金（2388）現階段的表現較為疲弱，指數MA50和MA200均在下挫區域。但是，MACD顯示著一個逆轉信號，可能是股價將要反彈的警告。投資者可以考慮在價位附近低點進場，並鎖定中短期的回報機會。", "reasons": ["基本面尚可", "技術面疲弱", "籌碼面流出"], "risk": "Medium"}, {"id": "2881", "name": "台中商業銀行", "total_score": 29.0, "scores": {"fundamental": 50, "technical": 0, "chip": 0, "ai": 70}, "ai_insight": "「台中商業銀行(2881)」近期獲利率高於同業平均，且資產質量優秀。短期看來，股票價格可能維持平衡或輕微上漲，但長期投資者應注意競爭激烈的金融市場環境和非 Performing Loans 的風險。", "reasons": ["基本面尚可", "技術面疲弱", "籌碼面流出"], "risk": "Medium"}];
         
         function renderCards() {
             const container = document.getElementById('stock-cards');
@@ -84,8 +84,6 @@
             const canvas = document.getElementById('chart-' + stock.id);
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
-            
-            // EXPLICIT MAPPING to ensure correct order regardless of dict keys
             const s = stock.scores || {};
             const data = [
                 s.fundamental || 0,
