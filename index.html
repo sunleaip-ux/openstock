@@ -21,13 +21,13 @@
             </div>
             <div class="text-right">
                 <p class="text-xs text-slate-500 uppercase">Last Update</p>
-                <p class="text-sm font-mono">2026-05-03 00:09</p>
+                <p class="text-sm font-mono">2026-05-03 00:13</p>
             </div>
         </header>
         <div id="stock-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </div>
     <script>
-        const stocks = [{"id": "2330", "name": "台積電", "total_score": 69.0, "scores": {"fundamental": 100, "technical": 0, "chip": 100, "ai": 70}, "ai_insight": "台積電(2330)的技術指標看來較好，MACD金叉，RSI在50以下，表明股票可能將繼續上漲。然而，K線圖中的高點回落現象提示市場疑慮，需要觀察後續走勢是否能夠恢復。", "reasons": ["基本面極其強勁", "技術面疲弱", "籌碼面強力買入"], "risk": "Low"}, {"id": "2454", "name": "聯發科", "total_score": 54.0, "scores": {"fundamental": 50, "technical": 100, "chip": 0, "ai": 70}, "ai_insight": "聯發科(2454)：短期下跌趨勢，但長期看法正面。EPS成長明顯，營收增長率仍維持高水平；股票價格回報率超過同業平均值。然而，市場反應對手競爭壓力和全球經濟變化的影響。", "reasons": ["基本面尚可", "技術趨勢強勢", "籌碼面流出"], "risk": "Medium"}, {"id": "2317", "name": "鴻海", "total_score": 69.0, "scores": {"fundamental": 100, "technical": 0, "chip": 100, "ai": 70}, "ai_insight": "鴻海(2317)：短期持續上揚，中長期趨勢疲弱。近期業績未達預期，股價反應正面。考慮減持或鎖定長期獲利機會。", "reasons": ["基本面極其強勁", "技術面疲弱", "籌碼面強力買入"], "risk": "Low"}, {"id": "2388", "name": "富邦金", "total_score": 54.0, "scores": {"fundamental": 50, "technical": 0, "chip": 100, "ai": 70}, "ai_insight": "「2388富邦金」短期下跌趨勢，低估值支持買入。中長期看好銀行業整體表現，富邦金的高質量資產和強健核心業務將維持其競爭力。", "reasons": ["基本面尚可", "技術面疲弱", "籌碼面強力買入"], "risk": "Medium"}, {"id": "2881", "name": "台中商業銀行", "total_score": 39.0, "scores": {"fundamental": 0, "technical": 0, "chip": 100, "ai": 70}, "ai_insight": "台中商業銀行(2881)：\n\n* 近期表現平穩，ROE維持在7%以上\n* 客戶資產質量改善，非performing loans率下降\n* 資金成本壓力仍然明顯，但已經開始見底\n* 業務展望良好，擁有穩定且多元化的客戶群體", "reasons": ["基本面需關注", "技術面疲弱", "籌碼面強力買入"], "risk": "Medium"}];
+        const stocks = [{"id": "2330", "name": "台積電", "total_score": 29.0, "scores": {"fundamental": 50, "technical": 0, "chip": 0, "ai": 70}, "ai_insight": "「台積電(2330)的 earnings growth仍然維持穩定，2023年EPS預期將繼續增加12%以上。但是，近期的技術指標表現較為疲弱，短期下跌風險增加。投資者可以考慮在價格低位進行買入，但需要注意長期趨勢仍然bullish。」", "reasons": ["基本面尚可", "技術面疲弱", "籌碼面流出"], "risk": "Medium"}, {"id": "2454", "name": "聯發科", "total_score": 54.0, "scores": {"fundamental": 50, "technical": 100, "chip": 0, "ai": 70}, "ai_insight": "聯發科2454)：維持強勢走勢，技術指標顯示買氣強勁，RSI仍在中區，MACD快線破上影線，短期高點可能達到新的高度。", "reasons": ["基本面尚可", "技術趨勢強勢", "籌碼面流出"], "risk": "Medium"}, {"id": "2317", "name": "鴻海", "total_score": 64.0, "scores": {"fundamental": 0, "technical": 100, "chip": 100, "ai": 70}, "ai_insight": "鴻海(2317)的技術指標顯示，股票已經從低點反彈，MACD金線呈現上漲趋勢。RSI值約60%，且股價未超越強買區域。短期看法：可能繼續上漲，但需注意50日均線的支持作用。如果股價跌破支撐點，則需要重新評估投資機會。", "reasons": ["基本面需關注", "技術趨勢強勢", "籌碼面強力買入"], "risk": "Low"}, {"id": "2388", "name": "富邦金", "total_score": 44.0, "scores": {"fundamental": 100, "technical": 0, "chip": 0, "ai": 70}, "ai_insight": "「富邦金(2388)的股票價值較低，以獲取高獲利回報。但是，商業貸款業務增加，風險也隨之升高。建議觀望或短期操作。」", "reasons": ["基本面極其強勁", "技術面疲弱", "籌碼面流出"], "risk": "Medium"}, {"id": "2881", "name": "台中商業銀行", "total_score": 54.0, "scores": {"fundamental": 50, "technical": 100, "chip": 0, "ai": 70}, "ai_insight": "台中商業銀行(2881)的營運表現相對穩定，但核心獲利能力和資產質量仍需改善。近期股票價格上漲主要是因為政府實施經濟刺激措施，帶動金融業景氣。但在未來，銀行業需要面對網銀競爭和 Interest RateRisk的挑戰，投資者應該保持警惕。", "reasons": ["基本面尚可", "技術趨勢強勢", "籌碼面流出"], "risk": "Medium"}];
         
         function renderCards() {
             const container = document.getElementById('stock-cards');
@@ -40,15 +40,13 @@
                 const card = document.createElement('div');
                 card.className = 'glass p-6 rounded-2xl shadow-xl';
                 
-                // Use safe defaults for all variables
                 const name = stock.name || '未知個股';
                 const sid = stock.id || 'N/A';
                 const score = stock.total_score || 0;
                 const risk = stock.risk || 'Medium';
                 const reasons = stock.reasons || ['無具體理由'];
                 const insight = stock.ai_insight || 'AI 分析暫時不可用';
-                const component_scores = stock.scores ? Object.values(stock.scores) : [0, 0, 0, 0];
-
+                
                 card.innerHTML = `
                     <div class="flex justify-between items-start mb-4">
                         <div>
@@ -86,7 +84,15 @@
             const canvas = document.getElementById('chart-' + stock.id);
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
-            const data = stock.scores ? Object.values(stock.scores) : [0, 0, 0, 0];
+            
+            // EXPLICIT MAPPING to ensure correct order regardless of dict keys
+            const s = stock.scores || {};
+            const data = [
+                s.fundamental || 0,
+                s.technical || 0,
+                s.chip || 0,
+                s.ai || 0
+            ];
             
             new Chart(ctx, {
                 type: 'radar',
@@ -95,10 +101,13 @@
                     datasets: [{
                         label: 'Score',
                         data: data,
-                        backgroundColor: 'rgba(56, 189, 248, 0.2)',
+                        backgroundColor: 'rgba(56, 189, 248, 0.3)',
                         borderColor: 'rgba(56, 189, 248, 1)',
-                        borderWidth: 2,
-                        pointBackgroundColor: 'rgba(56, 189, 248, 1)'
+                        borderWidth: 3,
+                        pointBackgroundColor: 'rgba(56, 189, 248, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(56, 189, 248, 1)'
                     }]
                 },
                 options: {
@@ -106,7 +115,7 @@
                         r: {
                             angleLines: { color: 'rgba(255,255,255,0.1)' },
                             grid: { color: 'rgba(255,255,255,0.1)' },
-                            pointLabels: { color: '#94a3b8', font: { size: 12 } },
+                            pointLabels: { color: '#94a3b8', font: { size: 12, weight: 'bold' } },
                             ticks: { display: false },
                             suggestedMin: 0,
                             suggestedMax: 100
