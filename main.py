@@ -1,4 +1,5 @@
 import os
+from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from core.data_collector import DataCollector
 from core.technical_analyzer import TechnicalAnalyzer
@@ -12,13 +13,18 @@ from utils.notifier import Notifier
 load_dotenv()
 
 def run_stock_picker():
-    print("🚀 Starting market scan...")
+    print("🚀 Starting market scan with dynamic dates...")
     collector = DataCollector()
     tech_anal = TechnicalAnalyzer()
     chip_anal = ChipAnalyzer()
     fund_anal = FundamentalAnalyzer()
     news_anal = NewsAnalyzerPro()
     
+    # Dynamic Dates: Last 365 days
+    end_date = datetime.now().strftime("%Y-%m-%d")
+    start_date = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
+    print(f"📅 Analysis Range: {start_date} to {end_date}")
+
     watchlist = [
         {"id": "2330", "name": "台積電"},
         {"id": "2454", "name": "聯發科"},
@@ -32,10 +38,16 @@ def run_stock_picker():
         sid = stock["id"]
         print(f"Analyzing {stock['name']} ({sid})...")
         
-        price_df = collector.get_price_data(sid, '2026-01-01', '2026-12-31')
-        chip_df = collector.get_chip_data(sid, '2026-01-01', '2026-12-31')
+        # 1. Data Collection
+        price_df = collector.get_price_data(sid, start_date, end_date)
+        chip_df = collector.get_chip_data(sid, start_date, end_date)
         fund_df = collector.get_fundamental_data(sid)
         
+        # LOG: Check if data was actually fetched
+        print(f"   - Price data: {len(price_df)} rows")
+        print(f"   - Chip data: {len(chip_df)} rows")
+        
+        # 2. Analysis
         t_score, t_bull = tech_anal.analyze(price_df)
         c_score, c_bull = chip_anal.analyze(chip_df)
         f_score, f_bull = fund_anal.analyze(fund_df)
@@ -43,6 +55,7 @@ def run_stock_picker():
         news_list = news_anal.fetch_news(sid)
         n_score, n_reason, n_sentiment = news_anal.analyze_with_llm(sid, news_list)
         
+        # 3. Scoring
         scores = {"fundamental": f_score, "technical": t_score, "chip": c_score, "news": n_score}
         final_score = ScoringEngine.calculate_final_score(scores)
         
